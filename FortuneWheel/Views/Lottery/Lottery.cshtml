@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="target-densitydpi=device-dpi,width=480" name="viewport"/>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>玩游戏抽大奖</title>
+    <link rel="Stylesheet" href="~/Content/CSS/lottery.css" />
+</head>
+<body>
+    <div id="wrap">
+        <div class="topbn">
+            <p>
+                活动期间，在玩库内下载安装指定游戏即可获得3次抽奖机会。<a class="btn" title="火速前往" href="wanku://playFlow/1"></a></p>
+        </div>
+        <p class="awardbg">
+            你现有<span id="num"></span>次抽奖机会。<a href="javascript:void(0)" id="refresh">刷新次数</a></p>
+        <div class="main">
+            <div id="mainzp">
+                <img src="~/Content/Images/ypan.png" alt="zp" id="zp" />
+                <em id="arrow"></em><span id="start"></span>
+            </div>
+        </div>
+                <dl>
+            <dt>温馨提示</dt>
+            1、活动时间2014年1月23日-2014年1月31日。 
+            <br>2、活动期间，在玩库玩转流量-热门游戏中下载安装《街头枪战2》即可获得3次抽奖机会。
+            <br>3、完成下载安装游戏后，抽奖次数在24小时内更新。
+            <br>4、重复下载安装《街头枪战2》不会带来抽奖次数的增加。
+            <br>5、所有未使用抽奖次数将于2014年1月31日晚24点失效。
+            <br>6、话费奖励将在中奖后48小时内下发到您的手机。
+            <br>7、实物奖励将在中奖后7个工作日内寄出
+            <br>8、客服电话：10000
+        </dl>
+    </div>
+    <script src="~/Content/Script/jquery-1.9.1.js"></script>
+    <script src="~/Content/Script/jquery.rotate.1-1.js"></script>
+    <script src="~/Content/Script/lottery.js"></script>
+    <script src="~/Content/Script/responsive.js"></script>
+    @if (@ViewBag.ErrorMessage != "")
+    { 
+        <script type="text/javascript">
+            $(function () { alert('@ViewBag.ErrorMessage') });
+        </script>
+    }
+</body>
+</html>

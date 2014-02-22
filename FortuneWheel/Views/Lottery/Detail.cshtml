@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Entity.Model.LotteryAwards>
+
+@{
+    ViewBag.Title = "LotteryAwardDetail.cshtml";
+}
+
+<h2>奖品信息</h2>
+
+<p>
+   
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayName("ID")
+        </th>
+        <th>
+            @Html.DisplayName("奖品名称")
+        </th>
+        <th>
+            @Html.DisplayName("中奖概率")
+        </th>
+        <th>
+            @Html.DisplayName("奖品所在图片中的角度")
+        </th>
+        <th>
+            @Html.DisplayName("奖品总数")
+        </th>
+        <th>
+            @Html.DisplayName("奖品剩余数量")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AwardId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AwardName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Angle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalCount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SurplusCount)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AwardId  }) 
+        </td>
+    </tr>
+}
+
+</table>

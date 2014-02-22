@@ -1,0 +1,68 @@
+﻿@model Entity.Model.LotteryAwards
+
+@{
+    ViewBag.Title = "LotteryAwardEdit";
+}
+
+<h2>LotteryAwardEdit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>LotteryAwards</legend>
+
+        <div class="editor-label">
+            @Html.HiddenFor(model => model.AwardId)
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.AwardId)
+            @Html.ValidationMessageFor(model => model.AwardId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AwardName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AwardName)
+            @Html.ValidationMessageFor(model => model.AwardName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Rate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Rate)
+            @Html.ValidationMessageFor(model => model.Rate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TotalCount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.TotalCount)
+            @Html.ValidationMessageFor(model => model.TotalCount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SurplusCount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SurplusCount)
+            @Html.ValidationMessageFor(model => model.SurplusCount)
+        </div>
+
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Detail")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

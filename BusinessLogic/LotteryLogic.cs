@@ -69,10 +69,27 @@ namespace BusinessLogic
             return GetLotteryTime(sPhoneNumber) > 0;
         }
 
+        public static bool CheckAllDownload(string sPhoneNumber)
+        {
+            LotteryUser user = GetLotteryUser(sPhoneNumber);
+            if (user == null)
+            {
+                return false; 
+            }
+            else if (user.LotteryCount == user.SurplusCount)
+            {
+                return true;
+            }
+            else
+            {
+                return false; 
+            }
+        }
+
         public static int GetLotteryTime(string sPhoneNumber)
         {
             LotteryUser user = GetLotteryUser(sPhoneNumber);
-            return user == null ? 0 : user.LotteryCount;
+            return user == null ? 0 : user.SurplusCount;
         }
 
         public static List<LotteryHistory> GetLotteryHistory(string sPhoneNumber = "")
@@ -116,6 +133,27 @@ namespace BusinessLogic
                 }
             }
         }
+
+        //public static bool QueryIsDownLoad(string sPhoneNumber)
+        //{
+        //    using (WebClient webClient = new WebClient())
+        //    {
+        //        webClient.Encoding = Encoding.UTF8;
+        //        string response = webClient.UploadString(string.Format(sQueryDownLoadUrl, sPhoneNumber, HttpUtility.UrlEncode(sAppName)), "GET");
+        //        string retCode = response.IndexOf("Retcode") != -1 && response.IndexOf("Retcode") + 12 <= response.Length
+        //            ? response.Substring(response.IndexOf("Retcode") + 9, 3) : string.Empty;
+        //        string appName = response.IndexOf("APPNAME") != -1 && response.IndexOf("APPNAME") + 18 <= response.Length
+        //            ? response.Substring(response.IndexOf("APPNAME") + 10, 9) : string.Empty;
+        //        if (retCode == "100" && appName == sAppName)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
 
         public static bool QueryIsDownLoad(string sPhoneNumber)
         {

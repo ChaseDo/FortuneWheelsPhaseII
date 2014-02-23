@@ -9,6 +9,7 @@ namespace Entity.Model
     {
         public string CellPhoneNo { get; set; }
         public int LotteryCount { get; set; }
+        public int SurplusCount { get; set; }
         public DateTime LastLoginTime { get; set; }
     }
 }

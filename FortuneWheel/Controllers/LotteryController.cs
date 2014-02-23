@@ -17,21 +17,42 @@ namespace FortuneWheel.Controllers
 
         public ActionResult Lottery()
         {
-            string sPhoneNumber = this.Request.QueryString["Phone"];
             string sErrorMessage = string.Empty;
-            //if (LotteryLogic.QueryIsDownLoad(sPhoneNumber))
-            //{
-            //    LotteryLogic.StoreLotteryUser(sPhoneNumber);
-            //    if (!LotteryLogic.CheckLotteryTime(sPhoneNumber))
-            //    {
-            //        sErrorMessage = "您已使用完抽奖次数，谢谢参与";
-            //    }
-            //}
-            //else
-            //{
-            //    sErrorMessage = "请点击“火速前往”，下载安装《街头枪战2》游戏参与活动!";
-            //}
-            sErrorMessage = "活动已结束，无法抽奖";
+            string sPhoneNumber = string.Empty;
+
+            if (this.Request.QueryString["mo"] != null)
+            {
+                sPhoneNumber = this.Request.QueryString["mo"];
+            }
+            else if (this.Request.QueryString["Phone"] != null)
+            {
+                sPhoneNumber = this.Request.QueryString["Phone"];
+            }
+            else
+            {
+                sPhoneNumber = string.Empty;
+            }    
+
+            if (string.IsNullOrEmpty(sPhoneNumber))
+            {
+                sErrorMessage = "请先登录再开始下载任务";
+            }
+            else
+            {
+                LotteryLogic.StoreLotteryUser(sPhoneNumber);
+
+                //登录页面，若用户还未下载完所有任务
+                if (!LotteryLogic.CheckAllDownload(sPhoneNumber))
+                {
+                    sErrorMessage = "请在活动页面上下载指定游戏，参与活动吧！";
+                }
+                //用户完成所有下载任务，拿到并用完了所有抽奖机会
+                if (!LotteryLogic.CheckLotteryTime(sPhoneNumber))
+                {
+                    sErrorMessage = "谢谢参与，敬请期待下期活动";
+                }
+            }
+            //sErrorMessage = "活动已结束，无法抽奖";
             ViewBag.ErrorMessage = sErrorMessage;
             return View();
         }
@@ -42,27 +63,27 @@ namespace FortuneWheel.Controllers
             string sErrorMessage = string.Empty;
             try
             {
-                //if (LotteryLogic.QueryIsDownLoad(sPhoneNumber))
-                //{
-                //    if (LotteryLogic.CheckLotteryTime(sPhoneNumber))
-                //    {
-                //        sAngle = LotteryLogic.StartLottery(sPhoneNumber).Angle;
-                //    }
-                //    else
-                //    {
-                //        sErrorMessage = "您已使用完抽奖次数，谢谢参与";
-                //    }
-                //}
-                //else
-                //{
-                //    sErrorMessage = "快去下载安装《街头枪战2》游戏参与抽奖吧~";
-                //}
-                sErrorMessage = "活动已结束，无法抽奖";
+                if (string.IsNullOrEmpty(sPhoneNumber))
+                {
+                    sErrorMessage = "请先登录再开始下载任务";
+                }
+                else
+                {
+                    if (LotteryLogic.CheckLotteryTime(sPhoneNumber))
+                    {
+                        sAngle = LotteryLogic.StartLottery(sPhoneNumber).Angle;
+                    }
+                    else
+                    {
+                        sErrorMessage = "您已使用完抽奖次数，谢谢参与";
+                    }
+                }
+                //sErrorMessage = "活动已结束，无法抽奖";
             }
-            catch (HttpException e)
-            {
-                sErrorMessage = "发送短信失败";
-            }
+            //catch (HttpException e)
+            //{
+            //    sErrorMessage = "发送短信失败";
+            //}
             catch (Exception e)
             {
                 sErrorMessage = " 发生错误请试重";
@@ -93,11 +114,34 @@ namespace FortuneWheel.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Download(string sPhoneNumber)
+        {
+            string sErrorMessage = string.Empty;
+            int num = 0;
+            try
+            {
+                num = LotteryLogic.GetLotteryTime(sPhoneNumber);
+            }
+            catch (Exception e)
+            {
+                sErrorMessage = " 发生错误请重试";
+            }
+            return Json(new
+            {
+                num = num,
+                error = sErrorMessage
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Sleep()
         {
             Thread.Sleep(3000);
             return View();
         }
+
+        //
+        // Change Rate Page
+        //
 
         [HttpGet]
         public ActionResult Login()

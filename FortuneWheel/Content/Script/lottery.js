@@ -84,6 +84,23 @@
             }
         });
     };
+
+    var download = function () {
+        $.ajax({
+            url: "/Lottery/Download",
+            data: { sPhoneNumber: getPhoneNumber() },
+            dataType: "json",
+            success: function (data) {
+                if (data.error == "") {
+                    $("#num").empty().html(data.num);
+                }
+                else {
+                    alert(data.error);
+                }
+            }
+        });
+    };
+
     var sleep = function (result) {
         $.ajax({
             url: "/Lottery/Sleep",
@@ -95,9 +112,12 @@
     };
     var getPhoneNumber = function () {
         var query = location.search.toLowerCase();
-        var index = query.indexOf("phone");
-        if (index == 1) {
-            return query.substring(index + 6, index + 17);
+//        var index = query.indexOf("phone");
+        if (query.substring(1, 3) == "mo") {
+            return query.substring(4, index + 15);
+        }
+        else if (query.substring(0, 5) == "phone") {
+            return query.substring(6, index + 17);
         }
         else {
             return "";

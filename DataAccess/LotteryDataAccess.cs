@@ -37,6 +37,15 @@ namespace DataAccess
             return dataBase.ExcuteSqlReturnDataTable(sql, sqlparameter);
         }
 
+        public static DataTable GetUserDownloadInfo(string sPhoneNumber)
+        {
+            DataBase dataBase = new DataBase();
+            string sql = "select * from DownloadHistory where CellPhoneNo = @CellPhoneNo";
+            SqlParameter[] sqlparameter = new SqlParameter[1];
+            sqlparameter[0] = new SqlParameter("@CellPhoneNo", sPhoneNumber);
+            return dataBase.ExcuteSqlReturnDataTable(sql, sqlparameter);
+        }
+
         public static DataTable GetLotteryAllUser()
         {
             DataBase dataBase = new DataBase();

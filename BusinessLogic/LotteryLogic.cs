@@ -107,6 +107,11 @@ namespace BusinessLogic
             return LotteryDataAccess.GetLotteryUser(sPhoneNumber).ConvertToModel<LotteryUser>().FirstOrDefault();
         }
 
+        public static LotteryUser GetLotteryUser(string sPhoneNumber)
+        {
+            return LotteryDataAccess.GetLotteryUser(sPhoneNumber).ConvertToModel<LotteryUser>().FirstOrDefault();
+        }
+
         public static List<LotteryUser> GetLotteryAllUser()
         {
             return LotteryDataAccess.GetLotteryAllUser().ConvertToModel<LotteryUser>();

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper.cs" />
+    <Compile Include="Model\DownloadHistory.cs" />
     <Compile Include="Model\LotteryAwards.cs" />
     <Compile Include="Model\LotteryHistory.cs" />
     <Compile Include="Model\LotteryUser.cs" />

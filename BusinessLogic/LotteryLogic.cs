@@ -63,10 +63,27 @@ namespace BusinessLogic
             }
             return ResultList.Where(x => x.AwardId == AwardId).FirstOrDefault();
         }
-        
-        public static bool CheckLotteryTime(string sPhoneNumber)
+
+        public static int NoLotteryTime(string sPhoneNumber)
         {
-            return GetLotteryTime(sPhoneNumber) > 0;
+            DownloadHistory downloadInfo = GetUserDownloadInfo(sPhoneNumber);
+            if (downloadInfo == null)
+            {
+                return -1;
+            }
+            else if (!downloadInfo.Game1 && !downloadInfo.Game2)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        public static bool CheckSurplusTime(string sPhoneNumber)
+        {
+            return GetSurplusTime(sPhoneNumber) > 0;
         }
 
         public static bool CheckAllDownload(string sPhoneNumber)
@@ -86,10 +103,16 @@ namespace BusinessLogic
             }
         }
 
-        public static int GetLotteryTime(string sPhoneNumber)
+        public static int GetSurplusTime(string sPhoneNumber)
         {
             LotteryUser user = GetLotteryUser(sPhoneNumber);
             return user == null ? 0 : user.SurplusCount;
+        }
+
+        public static int GetLotteryTime(string sPhoneNumber)
+        {
+            LotteryUser user = GetLotteryUser(sPhoneNumber);
+            return user == null ? 0 : user.LotteryCount;
         }
 
         public static List<LotteryHistory> GetLotteryHistory(string sPhoneNumber = "")
@@ -100,6 +123,16 @@ namespace BusinessLogic
         public static void StoreLotteryUser(string sPhoneNumber)
         {
             LotteryDataAccess.StoreLotteryUser(sPhoneNumber);
+        }
+
+        public static void DownloadGame1(string sPhoneNumber)
+        {
+            LotteryDataAccess.DownloadGame1(sPhoneNumber);
+        }
+
+        public static void DownloadGame2(string sPhoneNumber)
+        {
+            LotteryDataAccess.DownloadGame2(sPhoneNumber);
         }
 
         public static LotteryUser GetLotteryUser(string sPhoneNumber)
@@ -117,6 +150,17 @@ namespace BusinessLogic
             return LotteryDataAccess.GetLotteryAllUser().ConvertToModel<LotteryUser>();
         }
 
+        public static int GetGame1DownTime()
+        {
+            List<DownloadHistory> list = LotteryDataAccess.GetGame1DownTime().ConvertToModel<DownloadHistory>();
+            return list.Count;
+        }
+
+        public static int GetGame2DownTime()
+        {
+            List<DownloadHistory> list = LotteryDataAccess.GetGame2DownTime().ConvertToModel<DownloadHistory>();
+            return list.Count;
+        }
 
         public static bool UpdateAward(LotteryAwards awards)
         {

@@ -28,6 +28,20 @@ namespace DataAccess
             return dataBase.ExcuteSqlReturnDataTable(sql);
         }
 
+        public static DataTable GetGame1DownTime()
+        {
+            DataBase dataBase = new DataBase();
+            string sql = "select * from DownloadHistory where Game1 = 1";
+            return dataBase.ExcuteSqlReturnDataTable(sql);
+        }
+
+        public static DataTable GetGame2DownTime()
+        {
+            DataBase dataBase = new DataBase();
+            string sql = "select * from DownloadHistory where Game2 = 1";
+            return dataBase.ExcuteSqlReturnDataTable(sql);
+        }
+
         public static DataTable GetLotteryUser(string sPhoneNumber)
         {
             DataBase dataBase = new DataBase();
@@ -57,6 +71,24 @@ namespace DataAccess
         {
             DataBase dataBase = new DataBase();
             string sql = "exec spNewPlayer @CellPhoneNo = @CellPhone";
+            SqlParameter[] sqlparameter = new SqlParameter[1];
+            sqlparameter[0] = new SqlParameter("@CellPhone", sPhoneNumber);
+            dataBase.ExcuteSqlReturnInt(sql, sqlparameter);
+        }
+
+        public static void DownloadGame1(string sPhoneNumber)
+        {
+            DataBase dataBase = new DataBase();
+            string sql = "exec spDownloadGame1 @CellPhoneNo = @CellPhone";
+            SqlParameter[] sqlparameter = new SqlParameter[1];
+            sqlparameter[0] = new SqlParameter("@CellPhone", sPhoneNumber);
+            dataBase.ExcuteSqlReturnInt(sql, sqlparameter);
+        }
+
+        public static void DownloadGame2(string sPhoneNumber)
+        {
+            DataBase dataBase = new DataBase();
+            string sql = "exec spDownloadGame2 @CellPhoneNo = @CellPhone";
             SqlParameter[] sqlparameter = new SqlParameter[1];
             sqlparameter[0] = new SqlParameter("@CellPhone", sPhoneNumber);
             dataBase.ExcuteSqlReturnInt(sql, sqlparameter);

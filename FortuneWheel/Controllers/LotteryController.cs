@@ -47,7 +47,7 @@ namespace FortuneWheel.Controllers
                     sErrorMessage = "请在活动页面上下载指定游戏，参与活动吧！";
                 }
                 //用户完成所有下载任务，拿到并用完了所有抽奖机会
-                if (!LotteryLogic.CheckLotteryTime(sPhoneNumber))
+                if (!LotteryLogic.CheckSurplusTime(sPhoneNumber))
                 {
                     sErrorMessage = "谢谢参与，敬请期待下期活动";
                 }
@@ -69,13 +69,24 @@ namespace FortuneWheel.Controllers
                 }
                 else
                 {
-                    if (LotteryLogic.CheckLotteryTime(sPhoneNumber))
+                    if (LotteryLogic.NoLotteryTime(sPhoneNumber)<0)
                     {
-                        sAngle = LotteryLogic.StartLottery(sPhoneNumber).Angle;
+                        sErrorMessage = "请先登录再开始下载任务";
+                    }
+                    else if (LotteryLogic.NoLotteryTime(sPhoneNumber) == 0)
+                    {
+                        sErrorMessage = "快在页面上下载指定游戏参与抽奖吧~";
                     }
                     else
                     {
-                        sErrorMessage = "您已使用完抽奖次数，谢谢参与";
+                        if (!LotteryLogic.CheckSurplusTime(sPhoneNumber))
+                        {
+                            sErrorMessage = "谢谢参与，敬请期待下期活动";
+                        }
+                        else
+                        {
+                            sAngle = LotteryLogic.StartLottery(sPhoneNumber).Angle;
+                        }
                     }
                 }
                 //sErrorMessage = "活动已结束，无法抽奖";
@@ -114,13 +125,34 @@ namespace FortuneWheel.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Download(string sPhoneNumber)
+        public ActionResult Download1(string sPhoneNumber)
         {
             string sErrorMessage = string.Empty;
             int num = 0;
             try
             {
-                num = LotteryLogic.GetLotteryTime(sPhoneNumber);
+                LotteryLogic.DownloadGame1(sPhoneNumber);
+                num = LotteryLogic.GetGame1DownTime();
+            }
+            catch (Exception e)
+            {
+                sErrorMessage = " 发生错误请重试";
+            }
+            return Json(new
+            {
+                num = num,
+                error = sErrorMessage
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Download2(string sPhoneNumber)
+        {
+            string sErrorMessage = string.Empty;
+            int num = 0;
+            try
+            {
+                LotteryLogic.DownloadGame2(sPhoneNumber);
+                num = LotteryLogic.GetGame2DownTime();
             }
             catch (Exception e)
             {

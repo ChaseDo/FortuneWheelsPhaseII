@@ -71,18 +71,18 @@ namespace BusinessLogic
 
         public static bool CheckAllDownload(string sPhoneNumber)
         {
-            LotteryUser user = GetLotteryUser(sPhoneNumber);
-            if (user == null)
+            DownloadHistory downloadInfo = GetUserDownloadInfo(sPhoneNumber);
+            if (downloadInfo == null)
             {
-                return false; 
+                return false;
             }
-            else if (user.LotteryCount == user.SurplusCount)
+            else if (downloadInfo.Game1 && downloadInfo.Game2)
             {
                 return true;
             }
             else
             {
-                return false; 
+                return false;
             }
         }
 
@@ -107,9 +107,9 @@ namespace BusinessLogic
             return LotteryDataAccess.GetLotteryUser(sPhoneNumber).ConvertToModel<LotteryUser>().FirstOrDefault();
         }
 
-        public static LotteryUser GetLotteryUser(string sPhoneNumber)
+        public static DownloadHistory GetUserDownloadInfo(string sPhoneNumber)
         {
-            return LotteryDataAccess.GetLotteryUser(sPhoneNumber).ConvertToModel<LotteryUser>().FirstOrDefault();
+            return LotteryDataAccess.GetUserDownloadInfo(sPhoneNumber).ConvertToModel<DownloadHistory>().FirstOrDefault();
         }
 
         public static List<LotteryUser> GetLotteryAllUser()
